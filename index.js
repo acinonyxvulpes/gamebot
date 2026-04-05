@@ -8,23 +8,7 @@ dotenv.config();
 import handleReleaseButtons from "./interactions/releaseButtons.js";
 import handleShopButtons from "./interactions/shopButtons.js";
 
-client.on("interactionCreate", async interaction => {
-
-    if (interaction.isButton()) {
-        if (interaction.customId.startsWith("release_")) {
-            return handleReleaseButtons(interaction);
-        }
-        if (interaction.customId.startsWith("buy_")) {
-            return handleShopButtons(interaction);
-        }
-        return;
-    }
-
-    // slash commands...
-});
-
-
-// Create Discord client
+// 1. CREATE CLIENT FIRST
 const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
@@ -33,7 +17,7 @@ const client = new Client({
     ]
 });
 
-// Load commands from /commands folder
+// 2. LOAD COMMANDS
 const commands = [];
 client.commands = new Map();
 
@@ -48,7 +32,7 @@ for (const file of commandFiles) {
     client.commands.set(command.default.data.name, command.default);
 }
 
-// Register slash commands with Discord
+// 3. REGISTER SLASH COMMANDS
 const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
 
 async function registerCommands() {
@@ -63,23 +47,26 @@ async function registerCommands() {
     }
 }
 
-// Bot ready event
+// 4. READY EVENT
 client.once("ready", () => {
     console.log(`Logged in as ${client.user.tag}`);
 });
 
-// Handle ALL interactions (buttons + slash commands)
+// 5. INTERACTION HANDLER (buttons + slash commands)
 client.on("interactionCreate", async interaction => {
 
-    // BUTTON HANDLER
+    // BUTTONS
     if (interaction.isButton()) {
         if (interaction.customId.startsWith("release_")) {
             return handleReleaseButtons(interaction);
         }
+        if (interaction.customId.startsWith("buy_")) {
+            return handleShopButtons(interaction);
+        }
         return;
     }
 
-    // SLASH COMMAND HANDLER
+    // SLASH COMMANDS
     if (interaction.isChatInputCommand()) {
         const command = client.commands.get(interaction.commandName);
         if (!command) return;
@@ -93,7 +80,6 @@ client.on("interactionCreate", async interaction => {
     }
 });
 
-// Start bot
+// 6. START BOT
 registerCommands();
 client.login(process.env.TOKEN);
-
