@@ -33,12 +33,6 @@ export default {
         const stats1 = getPetStats(pet1);
         const stats2 = getPetStats(pet2);
 
-        createBattle(
-            interaction.channelId,
-            { id: interaction.user.id, pet: pet1, stats: stats1 },
-            { id: opponent.id, pet: pet2, stats: stats2 }
-        );
-
         const row = new ActionRowBuilder().addComponents(
             new ButtonBuilder()
                 .setCustomId("battle_accept")
@@ -50,10 +44,18 @@ export default {
                 .setStyle(ButtonStyle.Danger)
         );
 
-        await interaction.reply({
+        // IMPORTANT: fetchReply: true so we get the message ID
+        const msg = await interaction.reply({
             content: `${opponent}, **${interaction.user.username}** has challenged you to a pet battle!`,
             components: [row],
-            fetchReply: true // <-- THIS FIXES THE INTERACTION FAILING
+            fetchReply: true
         });
+
+        // Store battle using message ID
+        createBattle(
+            msg.id,
+            { id: interaction.user.id, pet: pet1, stats: stats1 },
+            { id: opponent.id, pet: pet2, stats: stats2 }
+        );
     }
 };
