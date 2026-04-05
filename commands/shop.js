@@ -45,3 +45,15 @@ Special pets you can only get here.`,
         });
     }
 };
+import { TOY_ITEMS } from "../data/toyItems.js";
+let toyButtons = new ActionRowBuilder();
+
+for (const key in TOY_ITEMS) {
+    const item = TOY_ITEMS[key];
+    toyButtons.addComponents(
+        new ButtonBuilder()
+            .setCustomId(`buy_toy_${key}`)
+            .setLabel(`${item.emoji} ${item.name} (${item.cost} coins)`)
+            .setStyle(ButtonStyle.Secondary)
+    );
+}
