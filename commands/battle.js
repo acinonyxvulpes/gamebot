@@ -33,7 +33,8 @@ export default {
         const stats1 = getPetStats(pet1);
         const stats2 = getPetStats(pet2);
 
-        createBattle(interaction.channelId,
+        createBattle(
+            interaction.channelId,
             { id: interaction.user.id, pet: pet1, stats: stats1 },
             { id: opponent.id, pet: pet2, stats: stats2 }
         );
@@ -51,7 +52,8 @@ export default {
 
         await interaction.reply({
             content: `${opponent}, **${interaction.user.username}** has challenged you to a pet battle!`,
-            components: [row]
+            components: [row],
+            fetchReply: true // <-- THIS FIXES THE INTERACTION FAILING
         });
     }
 };
