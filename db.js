@@ -20,7 +20,8 @@ function ensureUser(id) {
         db.users[id] = {
             coins: 0,
             pets: [],
-            lastDaily: 0 // <-- needed for /daily
+            lastDaily: 0,
+            activePet: 0
         };
         save();
     }
