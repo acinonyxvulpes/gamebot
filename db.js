@@ -1,6 +1,7 @@
 import fs from "fs";
+import path from "path";
 
-const dbPath = "./database.json";
+const dbPath = path.join(process.cwd(), "database.json");
 
 // Load or create database
 let db;
@@ -32,9 +33,7 @@ function ensureUser(id) {
     return db.users[id];
 }
 
-// XP + leveling system (safe version)
 function addXP(pet, amount) {
-    // Ensure fields exist
     if (pet.level == null) pet.level = 1;
     if (pet.xp == null) pet.xp = 0;
 
