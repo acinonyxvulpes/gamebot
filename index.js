@@ -6,8 +6,11 @@ dotenv.config();
 
 // Create Discord client
 const client = new Client({
-    intents: [GatewayIntentBits.Guilds]
-});
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.MessageContent
+    ]
 
 // Load commands from /commands folder
 const commands = [];
