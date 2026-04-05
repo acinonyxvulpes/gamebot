@@ -6,6 +6,23 @@ dotenv.config();
 
 // Import button handlers
 import handleReleaseButtons from "./interactions/releaseButtons.js";
+import handleShopButtons from "./interactions/shopButtons.js";
+
+client.on("interactionCreate", async interaction => {
+
+    if (interaction.isButton()) {
+        if (interaction.customId.startsWith("release_")) {
+            return handleReleaseButtons(interaction);
+        }
+        if (interaction.customId.startsWith("buy_")) {
+            return handleShopButtons(interaction);
+        }
+        return;
+    }
+
+    // slash commands...
+});
+
 
 // Create Discord client
 const client = new Client({
