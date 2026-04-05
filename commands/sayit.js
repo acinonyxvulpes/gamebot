@@ -16,16 +16,30 @@ export default {
 
         await interaction.reply(`First person to type **${target}** wins 10 coins!`);
 
-        const filter = msg => msg.content.toLowerCase() === target.toLowerCase();
+        const filter = msg =>
+            !msg.author.bot &&
+            msg.channel.id === interaction.channel.id &&
+            msg.content.toLowerCase() === target.toLowerCase();
 
-        const collector = interaction.channel.createMessageCollector({ filter, max: 1, time: 15000 });
+        const collector = interaction.channel.createMessageCollector({
+            filter,
+            max: 1,
+            time: 15000
+        });
 
         collector.on("collect", msg => {
             const user = db.ensureUser(msg.author.id);
+
             user.coins += 10;
+
+            if (user.pets.length > 0) {
+                const pet = user.pets[0];
+                db.addXP(pet, 10);
+            }
+
             db.save();
 
-            msg.reply(`🎉 You win 10 coins, ${msg.author}!`);
+            msg.reply(`🎉 You win 10 coins and your pet gains XP, ${msg.author}!`);
         });
 
         collector.on("end", collected => {
