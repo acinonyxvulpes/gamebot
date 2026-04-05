@@ -7,6 +7,10 @@ dotenv.config();
 // Import button handlers
 import handleReleaseButtons from "./interactions/releaseButtons.js";
 import handleShopButtons from "./interactions/shopButtons.js";
+if (interaction.customId.startsWith("battle_")) {
+    return handleBattleButtons(interaction);
+}
+
 
 // 1. CREATE CLIENT FIRST
 const client = new Client({
