@@ -13,16 +13,23 @@ export default {
 
     async run(interaction) {
         const emoji = interaction.options.getString("emoji");
+
+        // Load or create user data
         const user = db.ensureUser(interaction.user.id);
 
-        user.pets.push({
+        // Create new pet
+        const newPet = {
             emoji,
-            rarity: "common",
-            level: 1
-        });
+            level: 1,
+            xp: 0
+        };
 
+        // Add pet to user's collection
+        user.pets.push(newPet);
+
+        // Save database
         db.save();
 
-        await interaction.reply(`You adopted a new pet ${emoji}`);
+        await interaction.reply(`🎉 You adopted a new pet ${emoji}!`);
     }
 };
