@@ -17,9 +17,9 @@ export default {
         await interaction.reply(`First person to type **${target}** wins 10 coins!`);
 
         const filter = msg =>
-            !msg.author.bot &&
-            msg.channel.id === interaction.channel.id &&
-            msg.content.toLowerCase() === target.toLowerCase();
+            !msg.author.bot && // ignore bots
+            msg.channel.id === interaction.channel.id && // same channel
+            msg.content.trim() === target; // exact match (no lowercase issues)
 
         const collector = interaction.channel.createMessageCollector({
             filter,
