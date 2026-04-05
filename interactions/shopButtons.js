@@ -55,3 +55,22 @@ export default async function handleShopButtons(interaction) {
         return interaction.reply({ content: `🎉 You bought a **${pet.emoji} ${pet.name}**!`, ephemeral: true });
     }
 }
+if (id.startsWith("buy_toy_")) {
+    const key = id.replace("buy_toy_", "");
+    const item = TOY_ITEMS[key];
+
+    if (!item) return interaction.reply({ content: "Invalid item.", ephemeral: true });
+
+    if (user.coins < item.cost) {
+        return interaction.reply({ content: `You need **${item.cost} coins** to buy ${item.emoji}.`, ephemeral: true });
+    }
+
+    if (!user.items) user.items = {};
+    if (!user.items[key]) user.items[key] = 0;
+    user.items[key]++;
+
+    user.coins -= item.cost;
+    db.save();
+
+    return interaction.reply({ content: `You bought a **${item.emoji} ${item.name}**!`, ephemeral: true });
+}
