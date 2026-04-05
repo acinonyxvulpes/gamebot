@@ -9,13 +9,17 @@ export default {
     async run(interaction) {
         const user = db.ensureUser(interaction.user.id);
 
-        if (user.pets.length === 0)
+        if (user.pets.length === 0) {
             return interaction.reply("You don't have any pets yet!");
+        }
 
-        const list = user.pets
-            .map(p => `${p.emoji} (Lvl ${p.level})`)
+        let list = user.pets
+            .map((p, i) => {
+                const xpNeeded = p.level * 20;
+                return `**${i + 1}.** ${p.emoji} — Lvl **${p.level}** (XP: ${p.xp}/${xpNeeded})`;
+            })
             .join("\n");
 
-        await interaction.reply(`Your pets:\n${list}`);
+        await interaction.reply(`🐾 **Your Pets:**\n${list}`);
     }
 };
