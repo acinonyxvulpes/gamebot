@@ -4,13 +4,14 @@ import path from "path";
 import dotenv from "dotenv";
 dotenv.config();
 
-// Create Discord client
+// Create Discord client with correct intents
 const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.MessageContent
     ]
+});
 
 // Load commands from /commands folder
 const commands = [];
@@ -23,7 +24,6 @@ for (const file of commandFiles) {
     const filePath = path.join(commandsPath, file);
     const command = await import(`file://${filePath}`);
 
-    // Register command data
     commands.push(command.default.data.toJSON());
     client.commands.set(command.default.data.name, command.default);
 }
