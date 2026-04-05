@@ -1,0 +1,37 @@
+import { SlashCommandBuilder } from "discord.js";
+import db from "../db.js";
+
+export default {
+    data: new SlashCommandBuilder()
+        .setName("sayit")
+        .setDescription("Start a Say-It minigame"),
+
+    async run(interaction) {
+        const words = [
+            "tiger", "panther", "cheetah", "lion", "meow",
+            "paws", "whiskers", "roar", "🐱", "🐯", "🐾", "🐶"
+        ];
+
+        const target = words[Math.floor(Math.random() * words.length)];
+
+        await interaction.reply(`First person to type **${target}** wins 10 coins!`);
+
+        const filter = msg => msg.content.toLowerCase() === target.toLowerCase();
+
+        const collector = interaction.channel.createMessageCollector({ filter, max: 1, time: 15000 });
+
+        collector.on("collect", msg => {
+            const user = db.ensureUser(msg.author.id);
+            user.coins += 10;
+            db.save();
+
+            msg.reply(`🎉 You win 10 coins, ${msg.author}!`);
+        });
+
+        collector.on("end", collected => {
+            if (collected.size === 0) {
+                interaction.followUp("Nobody typed it in time!");
+            }
+        });
+    }
+};
