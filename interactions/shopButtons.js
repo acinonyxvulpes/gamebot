@@ -50,7 +50,10 @@ export default async function handleShopButtons(interaction) {
             hunger: 100,
             lastFed: Date.now(),
             boredom: 0,
-            lastPlayed: Date.now()
+            lastPlayed: Date.now() 
+            sick: false,
+sickSince: null,
+
         });
 
         user.coins -= pet.cost;
