@@ -1,20 +1,22 @@
+// battle/battleManager.js
+
 export const battles = {};
 
-export function createBattle(channelId, p1, p2) {
-    battles[channelId] = {
-        player1: p1,
-        player2: p2,
+export function createBattle(messageId, player1, player2) {
+    battles[messageId] = {
+        player1,
+        player2,
         turn: "player1",
         waitingForAccept: true,
-        p1hp: p1.stats.hp,
-        p2hp: p2.stats.hp
+        p1hp: player1.stats.hp,
+        p2hp: player2.stats.hp
     };
 }
 
-export function getBattle(channelId) {
-    return battles[channelId];
+export function getBattle(messageId) {
+    return battles[messageId];
 }
 
-export function endBattle(channelId) {
-    delete battles[channelId];
+export function endBattle(messageId) {
+    delete battles[messageId];
 }
