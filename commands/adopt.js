@@ -22,9 +22,7 @@ export default {
             emoji,
             level: 1,
             xp: 0
-            sick: false,
-sickSince: null,
-
+          
         };
 
         // Add pet to user's collection
