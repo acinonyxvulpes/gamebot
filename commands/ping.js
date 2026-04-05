@@ -6,6 +6,6 @@ export default {
         .setDescription("Check if the bot is alive"),
 
     async run(interaction) {
-        await interaction.reply("Pong!");
+        await interaction.reply("im alive!!");
     }
 };
